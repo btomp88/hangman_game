@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JavaScript Hangman</title>
+</head>
+<body>
+
+<h1 style="text-align: center">Hello World!</h1>
+
+<script type="text/javascript">
+//Version 2.0 of the game, written using functions 
+
+var pickWord = function() {
+	var words = ['hi', 'the', 'love', 'grace'];
+	return words[Math.floor(Math.random() * words.length)];
+};
+//function returns a random word and stores it in var pickWord
+
+var setupAnswerArray = function(word) {
+	var answerArray = [];
+	for (let i = 0; i < word.length; i++) {
+		answerArray[i] = "_";
+	}
+	return answerArray;
+};
+//fuctions takes a word and loops through it, and for every letter of the word a _ is pushed into what starts as an empty array 
+
+var showPlayerProgress = function(answerArray) {
+	alert(remainingLetters + ' remaining letters:   ' + answerArray.join(' '));
+};
+//shows how many remaining letters a player has left, and also where in the array those letters are by making the array into a string separated by a space
+
+var getGuess = function() {
+	alert(guessLimit + " remaining guesses");
+	guessLimit--;
+	if (guessLimit >= 0) {
+		return prompt('Guess a letter!');
+	} else {
+		return;
+	}
+};
+//each time the function is run it decreases var guessLimit by 1, and if guessLimit goes below 0, then the function returns no value, but if the guess limit is greater than 0, then function prompts player to guess a letter
+
+var updateGameState = function(guess, word, answerArray) {
+	var count = 0;
+	for (let j = 0; j < word.length; j++) {
+			if (word[j] === guess && answerArray[j] !== guess) {
+			answerArray[j] = guess;
+			count++;
+		}
+	}
+	return count;
+};
+//function returns the number of times that the letter guessed was in the word
+
+var showAnswerAndCongratulatePlayer = function(answerArray) {
+	alert('Congrats! The word was: ' + answerArray.join(''));
+};
+//once the player guesses the word, they get a nice message and are shown the word 
+
+var guessLimit = 6;
+//sets the number of guesses the player is allowed
+
+var wantToPlay = confirm('Want to play hangman?');
+if (wantToPlay === false) {
+	alert('Ah come on man!')
+	//player pressed cancel when asked if they wanted to play hangman
+} else {
+	var word = pickWord();
+	//stores a random word in var word
+	var answerArray = setupAnswerArray(word);
+	//stores an array with _ in all the places of the letter for var word
+	var remainingLetters = word.length;
+
+	while (remainingLetters > 0) {
+		showPlayerProgress(answerArray);
+		//alerts the player with how many remaining letters they have and what letters they've guessed so far
+		var guess = getGuess();
+		//prompts the player with a guess if they still have remaining guesses left
+		if (guess === null) {
+			break;
+			//game ends if player presses cancel when prompted to guess a letter
+		} else if (guess.length !== 1) {
+			alert('Only enter a single letter!')
+		} else {
+			var correctGuesses = updateGameState(guess, word, answerArray);
+			//returns a number with how many times the letter was in the word
+			remainingLetters -= correctGuesses;
+			//decreases remaining letters by how many times the letter guessed was in the word
+		}
+	}
+};
+
+if (guess !== null) {
+	//if the last guess exiting the loop was a letter, then player must have won the game and so are congratulated and shown the word
+	showAnswerAndCongratulatePlayer(answerArray);
+};
+</script>
+</body>
+</html>
+
+

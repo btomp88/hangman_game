@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JavaScript Hangman 1.0</title>
+</head>
+<body>
+
+<h1 style="text-align: center">Hello World!</h1>
+
+<script type="text/javascript">
+
+//Version 1.0 of the game, written without using functions
+
+
+var words = ['MacBook Pro', 'The Alchemist', 'I love Windows', 'Healthpiper FTW'];
+//wordbank 
+
+
+var word = words[Math.floor(Math.random() * words.length)];
+//randomly choose a word from the wordbank 
+
+
+var answerArray = [];
+for (let i = 0; i < word.length; i++) {
+	answerArray[i] = "_";
+}
+//create an empty array and for every letter in the variable word, change that letter to a _
+
+
+var remainingLetters = word.length
+//variable will be decreased everytime a letter from variable word is guessed 
+
+
+var wantToPlay = confirm('Want to play hangman?');
+if (wantToPlay === false) {
+	//do not enter while loop and the game is ended 
+	alert("Ahh come on man")
+
+} else {
+	//enter while loop, which will prompt the player enter a single letter, and then loop through the variable word to check is that letter is in the string stored in var word
+	while (remainingLetters > 0) {
+		
+		var letterTrack = alert('You have ' + remainingLetters + ' remaining letters(case sensitive)/spaces to guess:   ' + answerArray.join(' '));
+		//display to the player how many remaining guesses they have
+		
+		var playerGuess = prompt('Guess a letter!');
+		if (playerGuess === null) {
+			break;
+			//exit game if player presses cancel
+		} else if (playerGuess.length !== 1) {
+			alert('Only guess a letter man...');
+		} else {
+			for (let j = 0; j < word.length; j++)
+				//loop through each letter of var word and if the player's guess is in the word, then push the letter into the array at index j
+				if (word[j] === playerGuess && answerArray[j] !== playerGuess) {
+					answerArray[j] = playerGuess;
+					remainingLetters --;
+
+				} 
+			if (remainingLetters === 0) {
+				//end of the game
+				alert('Awesome! The word was: ' + word);
+				alert('You fought through, you continued without ceasing, like traffic in LA, and for these efforts you receive the following...');
+				confirm("Would you like you're reward?");
+				alert("Free Compliments: YOU'RE AN AMAZING PERSON!");
+
+			}
+		}
+	}
+
+};
+</script>
+</body>
+</html>
+
+
